@@ -18,8 +18,11 @@ app.get("/",(req,res)=>{
 })
 
 io.on('connection',(socket)=>{
-    console.log(`new client is connected with ${socket.id}`)
-    socket.on('disconnect',()=>console.log('disconnected'))
+    console.log(`connected with ${socket.id}`)
+    socket.on("disconnect",()=>console.log("disconnected"))
+    socket.on("message",({message,receiverSocketId})=>{
+        socket.to(receiverSocketId).emit("message",message)
+    })
 })
 
 server.listen(80,()=>{
